@@ -1,10 +1,10 @@
-'use client';
+export const dynamic = 'force-dynamic';
 
-import { Col, Row, Typography, Divider } from 'antd';
+import { Col, Row, Typography } from 'antd';
 import Image from 'next/image';
-
-const { Title, Paragraph, Text } = Typography;
-
+import Paragraph from 'antd/es/typography/Paragraph';
+const {   Text } = Typography;
+import Title from 'antd/es/typography/Title';
 export default function HakkimizdaContent() {
   return (
 <>
