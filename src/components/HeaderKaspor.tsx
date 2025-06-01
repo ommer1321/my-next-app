@@ -105,11 +105,11 @@ useEffect(() => {
    {!isMobile && (
   <div
     className="header-right"
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: 32,
-    }}
+    // style={{
+    //   display: 'flex',
+    //   alignItems: 'center',
+    //   gap: 32,
+    // }}
   >
           {/* Menü */}
           <nav className="main-menu" style={{ display: 'flex', gap: 24 }}>
@@ -195,16 +195,28 @@ useEffect(() => {
       )}
 
       {/* Basit stil override */}
-      <style jsx>{`
-        @media (max-width: 992px) {
-          .header-right {
-            display: none;
-          }
-          .mobile-toggle {
-            display: block !important;
-          }
-        }
-      `}</style>
+    <style jsx>{`
+  @media (max-width: 991px) {
+    .header-right {
+      display: none;
+    }
+    .mobile-toggle {
+      display: block !important;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .mobile-toggle {
+      display: none !important;
+    }
+  }
+`}</style>
+
     </header>
   );
 }
