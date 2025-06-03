@@ -58,7 +58,7 @@ export default function HeaderKaspor() {
         <div className="header-right">
           <nav className="main-menu">
             {menuItems.map((item) => (
-              <Link
+              <Link style={{ fontFamily: 'var(--font-montserrat)' }}
                 key={item.href}
                 href={item.href}
                 className={`menu-link ${pathname.startsWith(item.href) ? 'active' : ''}`}

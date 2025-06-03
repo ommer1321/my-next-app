@@ -8,10 +8,10 @@ const { Title, Text } = Typography;
 
 export default function UrunDetaySayfasi() {
   const altUrunler = [
-    { name: 'ELLIPTICAL (LED SCREEN)', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/elliptical' },
-    { name: 'RECUMBENT BIKE (LED SCREEN)', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/recumbent-bike' },
-    { name: 'UPRIGHT BIKE (LED SCREEN)', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/upright-bike' },
-    { name: 'TREAD MILL', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/tread-mill' },
+    { name: 'ELLIPTICAL (LED SCREEN)', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/elliptical/deneme' },
+    { name: 'RECUMBENT BIKE (LED SCREEN)', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/recumbent-bike/deneme' },
+    { name: 'UPRIGHT BIKE (LED SCREEN)', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/upright-bike/deneme' },
+    { name: 'TREAD MILL', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/tread-mill/deneme' },
   ];
 
   return (
