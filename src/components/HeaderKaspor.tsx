@@ -6,25 +6,13 @@ import Image from 'next/image';
 import { theme } from 'antd';
 import { darkenColor } from '@/utils/color';
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function HeaderKaspor() {
   const pathname = usePathname();
   const { token } = theme.useToken();
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 992);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const menuItems = [
     { label: 'ANASAYFA', href: '/' },
@@ -68,32 +56,30 @@ export default function HeaderKaspor() {
         </button>
 
         {/* Masaüstü Menü */}
-        {isClient && !isMobile && (
-          <div className="header-right">
-            <nav className="main-menu">
-              {menuItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`menu-link ${pathname.startsWith(item.href) ? 'active' : ''}`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+        <div className="header-right">
+          <nav className="main-menu">
+            {menuItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`menu-link ${pathname.startsWith(item.href) ? 'active' : ''}`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
-            <div className="menu-buttons">
-              {['Teklif Al', '0 531 087 50 63', '0216 592 75 42'].map((label, index) => (
-                <button key={index} className="kaspor-btn">
-                  {label}
-                </button>
-              ))}
-            </div>
+          <div className="menu-buttons">
+            {['Teklif Al', '0 531 087 50 63', '0216 592 75 42'].map((label, index) => (
+              <button key={index} className="kaspor-btn">
+                {label}
+              </button>
+            ))}
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Mobil Açılır Menü */}
+      {/* Mobil Menü */}
       {mobileOpen && (
         <div className="mobile-menu">
           {menuItems.map((item) => (
@@ -112,7 +98,6 @@ export default function HeaderKaspor() {
         </div>
       )}
 
-      {/* CSS Stiller */}
       <style jsx>{`
         .mobile-toggle {
           display: none;
@@ -187,8 +172,9 @@ export default function HeaderKaspor() {
 
         @media (max-width: 992px) {
           .header-right {
-            display: none;
+            display: none !important;
           }
+
           .mobile-toggle {
             display: block !important;
           }
