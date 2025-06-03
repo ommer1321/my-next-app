@@ -8,30 +8,23 @@ import { darkenColor } from '@/utils/color';
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 
-
-
-
-
 export default function HeaderKaspor() {
   const pathname = usePathname();
   const { token } = theme.useToken();
+
   const [mobileOpen, setMobileOpen] = useState(false);
-
-
   const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
-useEffect(() => {
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 992);
-  };
-
-  handleResize(); // initial run
-  window.addEventListener('resize', handleResize);
-
-  return () => window.removeEventListener('resize', handleResize);
-}, []);
-
-
+  useEffect(() => {
+    setIsClient(true);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const menuItems = [
     { label: 'ANASAYFA', href: '/' },
@@ -41,22 +34,6 @@ useEffect(() => {
     { label: 'İLETİŞİM', href: '/iletisim' },
   ];
 
-  const getButtonStyle = (): React.CSSProperties => ({
-    backgroundColor: token.colorPrimary,
-    color: token.colorWhite,
-    border: 'none',
-    padding: '12px 20px',
-    fontWeight: token.fontWeightStrong,
-    fontSize: 14,
-    borderRadius: token.borderRadius,
-    cursor: 'pointer',
-    minWidth: 160,
-    boxShadow: 'none',
-    transition: 'all 0.3s ease',
-    fontFamily: 'var(--font-montserrat)',
-    textTransform: 'uppercase',
-  });
-
   return (
     <header
       style={{
@@ -65,10 +42,9 @@ useEffect(() => {
         zIndex: 1000,
         position: 'sticky',
         top: 0,
-
       }}
     >
-      <div 
+      <div
         style={{
           height: 100,
           padding: '0 24px',
@@ -86,137 +62,144 @@ useEffect(() => {
         {/* Mobil Menü Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          style={{
-            display: 'none',
-            fontSize: 24,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: '#333',
-          }}
           className="mobile-toggle"
         >
           {mobileOpen ? <CloseOutlined /> : <MenuOutlined />}
         </button>
 
+        {/* Masaüstü Menü */}
+        {isClient && !isMobile && (
+          <div className="header-right">
+            <nav className="main-menu">
+              {menuItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`menu-link ${pathname.startsWith(item.href) ? 'active' : ''}`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
 
-
-
-   {!isMobile && (
-  <div
-    className="header-right"
-    // style={{
-    //   display: 'flex',
-    //   alignItems: 'center',
-    //   gap: 32,
-    // }}
-  >
-          {/* Menü */}
-          <nav className="main-menu" style={{ display: 'flex', gap: 24 }}>
-            {menuItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                style={{
-                  fontFamily: 'var(--font-montserrat)',
-                  fontWeight: pathname === item.href ? 700 : 500,
-                  fontSize: 14,
-                  textTransform: 'uppercase',
-                  color: pathname === item.href ? token.colorPrimary : '#333',
-                  letterSpacing: '0.3px',
-                  textDecoration: 'none',
-                  transition: 'color 0.2s',
-                }}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Butonlar */}
-          <div className="menu-buttons" style={{ display: 'flex', gap: 12 }}>
-            {['Teklif Al', '0 531 087 50 63', '0216 592 75 42'].map((label, index) => (
-              <button
-                key={index}
-                style={getButtonStyle()}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget;
-                  el.style.backgroundColor = darkenColor(token.colorPrimary, 10);
-                  el.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget;
-                  el.style.backgroundColor = token.colorPrimary;
-                  el.style.boxShadow = 'none';
-                }}
-              >
-                {label}
-              </button>
-            ))}
+            <div className="menu-buttons">
+              {['Teklif Al', '0 531 087 50 63', '0216 592 75 42'].map((label, index) => (
+                <button key={index} className="kaspor-btn">
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-      </div> 
+        )}
+      </div>
 
       {/* Mobil Açılır Menü */}
       {mobileOpen && (
-        <div
-          className="mobile-menu"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 16,
-            padding: 24,
-            backgroundColor: '#fff',
-            borderTop: '1px solid #eee',
-          }}
-        >
+        <div className="mobile-menu">
           {menuItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setMobileOpen(false)}
-              style={{
-                fontFamily: 'var(--font-montserrat)',
-                fontWeight: 500,
-                fontSize: 16,
-                color: pathname === item.href ? token.colorPrimary : '#333',
-                textTransform: 'uppercase',
-                textDecoration: 'none',
-              }}
+              className={`menu-link ${pathname.startsWith(item.href) ? 'active' : ''}`}
             >
               {item.label}
             </Link>
           ))}
           {['Teklif Al', '0 531 087 50 63', '0216 592 75 42'].map((label, index) => (
-            <button key={index} style={getButtonStyle()}>{label}</button>
+            <button key={index} className="kaspor-btn">{label}</button>
           ))}
         </div>
       )}
 
-      {/* Basit stil override */}
-    <style jsx>{`
-  @media (max-width: 991px) {
-    .header-right {
-      display: none;
-    }
-    .mobile-toggle {
-      display: block !important;
-    }
-  }
+      {/* CSS Stiller */}
+      <style jsx>{`
+        .mobile-toggle {
+          display: none;
+          font-size: 24px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: #333;
+        }
 
-  @media (min-width: 992px) {
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-    .mobile-toggle {
-      display: none !important;
-    }
-  }
-`}</style>
+        .header-right {
+          display: flex;
+          align-items: center;
+          gap: 32px;
+        }
 
+        .main-menu {
+          display: flex;
+          gap: 24px;
+        }
+
+        .menu-link {
+          font-family: var(--font-montserrat);
+          font-weight: 500;
+          font-size: 14px;
+          text-transform: uppercase;
+          color: #333;
+          letter-spacing: 0.3px;
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+
+        .menu-link.active {
+          color: ${token.colorPrimary};
+          font-weight: 700;
+        }
+
+        .menu-buttons {
+          display: flex;
+          gap: 12px;
+        }
+
+        .kaspor-btn {
+          background-color: ${token.colorPrimary};
+          color: ${token.colorWhite};
+          border: none;
+          padding: 12px 20px;
+          font-weight: ${token.fontWeightStrong};
+          font-size: 14px;
+          border-radius: ${token.borderRadius}px;
+          cursor: pointer;
+          min-width: 160px;
+          box-shadow: none;
+          transition: all 0.3s ease;
+          font-family: var(--font-montserrat);
+          text-transform: uppercase;
+        }
+
+        .kaspor-btn:hover {
+          background-color: ${darkenColor(token.colorPrimary, 10)};
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-menu {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          padding: 24px;
+          background-color: #fff;
+          border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 992px) {
+          .header-right {
+            display: none;
+          }
+          .mobile-toggle {
+            display: block !important;
+          }
+        }
+
+        @media (min-width: 992px) {
+          .mobile-toggle {
+            display: none !important;
+          }
+        }
+      `}</style>
     </header>
   );
 }
