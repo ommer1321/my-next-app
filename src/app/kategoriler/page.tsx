@@ -3,19 +3,33 @@
 import { Row, Col, Typography } from 'antd';
 import Link from 'next/link';
 import Image from 'next/image';
+import { fetchUrunKategoriler, fetchUrunler } from '@/services/api';
 // import './styles.css'; // CSS efektlerini buradan vereceğiz
+  const { data: urunler, meta } = await fetchUrunler();
+  const { data } = await fetchUrunKategoriler();
+const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
+
+console.log(data,"kategori");
 
 
-const products = [
-  { title: 'Yeni Seri Ürünler', href: '/urunler/yeni-seri', image: '/urunler/kasspor-urun1.webp' },
-  { title: 'Yeni Seri Ürünler', href: '/urunler/yeni-seri', image: '/urunler/kasspor-urun1.webp' },
-  { title: 'Yeni Seri Ürünler', href: '/urunler/yeni-seri', image: '/urunler/kasspor-urun1.webp' },
-  { title: 'Yeni Seri Ürünler', href: '/urunler/yeni-seri', image: '/urunler/kasspor-urun1.webp' },
-  { title: 'Yeni Seri Ürünler', href: '/urunler/yeni-seri', image: '/urunler/kasspor-urun1.webp' },
-  { title: 'Yeni Seri Ürünler', href: '/urunler/yeni-seri', image: '/urunler/kasspor-urun1.webp' },
-  { title: 'Yeni Seri Ürünler', href: '/urunler/yeni-seri', image: '/urunler/kasspor-urun1.webp' },
-  { title: 'Yeni Seri Ürünler', href: '/urunler/yeni-seri', image: '/urunler/kasspor-urun1.webp' },
-];
+// // image olanları forma uygun dönüştür
+//       const products = data.map(item => ({
+//         title: item.urunKategoriName,
+//         href: `${"urunler/"}${item.slug || ''}`,
+//         image: `${API_BASE_URL}${item.urunKategoriImage?.url || ''}`,
+//       }));
+
+
+const products = data.map(item => ({
+  title: item.urunKategoriName,
+  href: `${"urunler/"}${item.slug || ''}`,
+  image: item.urunKategoriImage?.url?.startsWith('http')
+    ? item.urunKategoriImage.url
+    : `${API_BASE_URL}${item.urunKategoriImage?.url || ''}`,
+}));
+
+console.log('Ürünler:', products,urunler,meta);
+
 
 export default function UrunlerPage() {
   return (

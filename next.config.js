@@ -19,7 +19,21 @@ const nextConfig = {
   },
 
   images: {
-    domains: ['www.kasspor.com.tr'],
+       remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '1337',
+        pathname: '/uploads/**',
+      },
+       {
+        protocol: 'https',
+        hostname: 'worthy-thrill-7eb2c2bbd6.media.strapiapp.com',
+        pathname: '/**',
+      },
+    ],
+    domains: ['www.kasspor.com.tr',],
+    
     // loader: 'custom',         // Eğer dış kaynaklı optimize resim kullanacaksan aç
     // loaderFile: './my-loader.ts', // Cloudinary gibi hizmet için özel loader tanımı
   },

@@ -3,26 +3,70 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Col, Row, Typography } from 'antd';
+import { fetchUrunKategoriById } from '@/services/api';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { UrunKategori } from '@/intefaces/urunKategoriIF';
+import { log } from 'console';
+const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
 
 const { Title, Text } = Typography;
 
 export default function UrunDetaySayfasi() {
-  const altUrunler = [
-    { name: 'ELLIPTICAL (LED SCREEN)', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/elliptical/deneme' },
-    { name: 'RECUMBENT BIKE (LED SCREEN)', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/recumbent-bike/deneme' },
-    { name: 'UPRIGHT BIKE (LED SCREEN)', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/upright-bike/deneme' },
-    { name: 'TREAD MILL', src: '/urunler/kasspor-urun1.webp', slug: '/urunler/tread-mill/deneme' },
-  ];
+  const params = useParams();
+  const slug = params?.slug;
+  const [altUrunler, setAltUrunler] = useState<UrunKategori[]>([]);
+
+useEffect(() => {
+    const fetchData = async () => {
+      if (slug) {
+        try {
+          const { data } = await fetchUrunKategoriById(slug);
+          console.log('Kategori verisi:', data);
+
+          // const altUrunlerData = data?.map(item => ({
+          //   name: item.urunKategoriName,
+          //  slug : `urunler/${item.urunKategoriName || ''}`,
+          //  src : `${API_BASE_URL}${item.urunKategoriImage?.url || ''}`,
+          // })) || [];
+
+setAltUrunler(data);
+
+        } catch (error) {
+          console.error('Kategori verisi alınırken hata:', error);
+        }
+      }
+    };
+
+    fetchData();
+    console.log('altUrunler:', altUrunler);
+    
+  }, [slug]);
+
+
+
+
+
+
+
+
 
   return (
     <section style={{ backgroundColor: '#fff', padding: '40px 16px' }}>
       {/* Üst Geniş Tanıtım Alanı */}
       <Row gutter={[24, 24]} justify="center" align="middle">
+       
+       
+       {/* {altUrunler[0]?.urunKategoriDesc  &&(
         <Col xs={24} lg={12}>
           <div style={{ maxWidth: 600, padding: '0 16px' }}>
             <Title level={2} style={{ fontWeight: 700, color: '#b40024', marginBottom: 8 }}>
-              M SERIES
+              {altUrunler[0]?.urunKategoriName ??' Kategori Adı Bulunamadı'}
             </Title>
+            <Title level={4} style={{ margin: 0 }}>
+              {altUrunler[0]?.urunKategoriDesc ??' Kategori DEsc Bulunamadı'}
+            </Title>
+            
             <Title level={4} style={{ margin: 0, fontWeight: 700 }}>
               DİKEY DURUŞ <span style={{ fontWeight: 400 }}>İLE</span>
             </Title>
@@ -47,9 +91,12 @@ export default function UrunDetaySayfasi() {
             </Text>
           </div>
         </Col>
-        <Col xs={24} lg={12}>
+)} */}
+
+
+        <Col xs={24} lg={24}>
           <Image
-            src="/urunler/kasspor-urunslide1.webp"
+            src={altUrunler[0]?.urunKategoriSlideImage?.url ? `${API_BASE_URL}${altUrunler[0]?.urunKategoriSlideImage.url }` : '/urunler/kasspor-urun1.webp'}
             alt="Ürün"
             width={700}
             height={400}
@@ -67,19 +114,23 @@ export default function UrunDetaySayfasi() {
       </div>
 
       <Row gutter={[24, 24]} justify="center">
-        {altUrunler.map((item, index) => (
+        {altUrunler[0]?.urunlers?.map((item, index) => (
+          console.log('Ürün:', item),
           <Col key={index} xs={12} sm={12} md={6}>
-            <Link href={item.slug} style={{ textDecoration: 'none' }}>
+            <Link href={`/urun/${item.slug}`} style={{ textDecoration: 'none' }}>
               <div className="product-card">
                 <Image
-                  src={item.src}
-                  alt={item.name}
+                  src={item.urunImage[0].url? `${API_BASE_URL}${item.urunImage[0].url}` : '/urunler/kasspor-urusn1.webp'}
+                  alt={item.urunName}
                   width={400}
                   height={400}
                   className="product-image"
                 />
-                <div className="product-title">{item.name}</div>
+                <div className="product-title">{item.urunName}</div>
               </div>
+              <Title level={5} style={{ margin: 0, fontFamily: 'var(--font-montserrat)', textAlign: 'center' }}>
+                {item.urunName}
+            </Title>
             </Link>
           </Col>
         ))}

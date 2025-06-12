@@ -1,10 +1,56 @@
 "use client";
 
-import { Col, Row, Form, Input, Button, Typography } from "antd";
-
+import { createFormEntry } from "@/services/api";
+import { Col, Row, Form, Input, Button, Typography, message } from "antd";
+import { useRouter } from 'next/navigation';
+import { useState } from "react";
 const { Title } = Typography;
 
 export default function IletisimPage() {
+
+const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
+  // Form gönderildiğinde çalışacak fonksiyon
+
+
+
+
+
+
+
+
+
+const handleFinish = async (values: any) => {
+
+  console.log(1453, values);
+  
+  setLoading(true);
+
+  try {
+    const response = await createFormEntry(values);
+    const successCodes = [200, 201, 202];
+
+    if (successCodes.includes(response?.status || 200)) {
+  setLoading(false);
+
+      router.push('/tesekkurler'); // burada "router" olacak
+    } else {
+  setLoading(false);
+
+      message.error('Form gönderildi ancak bir sorun oluştu.');
+    }
+  } catch (error) {
+    console.error(error);
+    message.error('Form gönderilirken bir hata oluştu');
+  } finally {
+  }
+
+  setLoading(false);
+
+};
+
   return (
     <section style={{ backgroundColor: "#fff", padding: "60px 16px" }}>
       {/* Başlık */}
@@ -29,55 +75,56 @@ export default function IletisimPage() {
       <Row gutter={[32, 32]} justify="center">
         {/* Sol - Form Alanı */}
         <Col xs={24} md={12}>
-          <Form
-            layout="vertical"
-            style={{ maxWidth: 420, marginLeft: "auto", marginRight: "auto" }}
-            onFinish={(values) => console.log("Form verisi:", values)}
-          >
-            {[
-              { name: "name", label: "Adı Soyadı" },
-              {
-                name: "email",
-                label: "E Posta",
-                rules: [{ type: "email" as const }],
-              },
-              { name: "phone", label: "Telefon" },
-              { name: "subject", label: "Konu" },
-            ].map((field) => (
-              <Form.Item
-                key={field.name}
-                name={field.name}
-                label={<span style={{ color: "#666" }}>{field.label}</span>} // <-- griye yakın renk
-                rules={[{ required: true }, ...(field.rules || [])]}
-              >
-                <Input className="animated-input" />
-              </Form.Item>
-            ))}
+           <Form
+      layout="vertical"
+      style={{ maxWidth: 420, marginLeft: 'auto', marginRight: 'auto' }}
+      onFinish={handleFinish}
+    >
+      {[
+        { name: 'name', label: 'Adı Soyadı' },
+        { name: 'surname', label: 'Soyad' },
+        {
+          name: 'email',
+          label: 'E Posta',
+          rules: [{ type: 'email' as const }],
+        },
+        { name: 'tel', label: 'Telefon' },
+      ].map((field) => (
+        <Form.Item
+          key={field.name}
+          name={field.name}
+          label={<span style={{ color: '#666' }}>{field.label}</span>}
+          rules={[{ required: true, message: `${field.label} zorunludur` }, ...(field.rules || [])]}
+        >
+          <Input className="animated-input" />
+        </Form.Item>
+      ))}
 
-            <Form.Item
-              name="message"
-              label={<span style={{ color: "#666" }}>{"Mesaj"}</span>} // <-- griye yakın renk
-              rules={[{ required: true }]}
-            >
-              <Input.TextArea className="animated-input" rows={4} />
-            </Form.Item>
+      <Form.Item
+        name="desc"
+        label={<span style={{ color: '#666' }}>Mesaj</span>}
+      >
+        <Input.TextArea className="animated-input" rows={4} />
+      </Form.Item>
 
-            <Form.Item>
-              <Button
-                htmlType="submit"
-                style={{
-                  backgroundColor: "#b40024",
-                  color: "#fff",
-                  fontWeight: 600,
-                  padding: "6px 22px",
-                  fontSize: 14,
-                  borderRadius: 4,
-                }}
-              >
-                Gönder
-              </Button>
-            </Form.Item>
-          </Form>
+      <Form.Item>
+        <Button
+          htmlType="submit"
+                  loading={loading} // burada gösteriliyor
+
+          style={{
+            backgroundColor: '#b40024',
+            color: '#fff',
+            fontWeight: 600,
+            padding: '6px 22px',
+            fontSize: 14,
+            borderRadius: 4,
+          }}
+        >
+          Gönder
+        </Button>
+      </Form.Item>
+    </Form>
         </Col>
 
         {/* Sağ - Harita Alanı */}

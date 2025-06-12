@@ -4,36 +4,59 @@ import { Col, Row,  Typography } from 'antd';
 import Image from 'next/image';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import dynamic from 'next/dynamic';
+import { fetchReferanslar } from '@/services/api';
 
 const { Title, Text } = Typography;
 const Slider = dynamic(() => import('react-slick'), { ssr: false });
+const { data } = await fetchReferanslar();
 
 export default function ReferanslarContent() {
-  const referanslar = [
-    { name: 'Ramada', src: '/referanslar/referanslar-1.png' },
-    { name: 'Sivas Demirspor', src: '/referanslar/referanslar-1.png' },
-    { name: 'DoubleTree by Hilton', src: '/referanslar/referanslar-1.png' },
-    { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-    { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-    { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-    { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-    { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-  ];
+const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
+  console.log(data,1453);
+      
+  const withImage = data.filter(item => item.image && item.image.url);
+  const withoutImage = data.filter(item => !item.image || !item.image.url);
 
-const textReferanslar = [
-  { name: 'Nizip Spor Lisesi', location: 'Nizip' },
-  { name: 'Berke Çakmak ( PT)', location: 'Şişli İstanbul' },
-  { name: 'Ali Karaali ( PT)', location: 'Hatay' },
-  { name: 'Hulk Gym', location: 'Beykoz İstanbul' },
-  { name: 'Old School Gym', location: 'Esenyurt İstanbul' },
-  { name: 'Mist İnşaat', location: 'Üsküdar İstanbul' },
-  { name: 'Mist İnşaat', location: 'Üsküdar İstanbul' },
-  { name: 'Emrecan Eren', location: 'Denizli' },
-  { name: 'Gökhan Özer', location: 'Ankara' },
-  { name: 'Ufuk Hoca Spor Salonu', location: 'Mersin' },
-  { name: 'Hasan Yıldız (PT)', location: 'Nizip Gaziantep' },
-  { name: 'Erol Yılmaz Sosyal Bilimler Lisesi', location: 'Antalya' },
-];
+
+
+  // image olanları forma uygun dönüştür
+      const referanslar = withImage.map(item => ({
+        name: item.referansTitle,
+        src: `${API_BASE_URL}${item.image?.url || ''}`, // garantiye al
+      }));
+
+       // image olmayanları forma uygun dönüştür
+      const textReferanslar = withoutImage.map(item => ({
+        name: item.referansTitle,
+        location: item.location || '', // location null olabilir
+      }));
+      console.log('With Image:', referanslar);
+      console.log('Without Image:', textReferanslar);
+  // const referanslar = [
+  //   { name: 'Ramada', src: '/referanslar/referanslar-1.png' },
+  //   { name: 'Sivas Demirspor', src: '/referanslar/referanslar-1.png' },
+  //   { name: 'DoubleTree by Hilton', src: '/referanslar/referanslar-1.png' },
+  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
+  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
+  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
+  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
+  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
+  // ];
+
+// const textReferanslar = [
+//   { name: 'Nizip Spor Lisesi', location: 'Nizip' },
+//   { name: 'Berke Çakmak ( PT)', location: 'Şişli İstanbul' },
+//   { name: 'Ali Karaali ( PT)', location: 'Hatay' },
+//   { name: 'Hulk Gym', location: 'Beykoz İstanbul' },
+//   { name: 'Old School Gym', location: 'Esenyurt İstanbul' },
+//   { name: 'Mist İnşaat', location: 'Üsküdar İstanbul' },
+//   { name: 'Mist İnşaat', location: 'Üsküdar İstanbul' },
+//   { name: 'Emrecan Eren', location: 'Denizli' },
+//   { name: 'Gökhan Özer', location: 'Ankara' },
+//   { name: 'Ufuk Hoca Spor Salonu', location: 'Mersin' },
+//   { name: 'Hasan Yıldız (PT)', location: 'Nizip Gaziantep' },
+//   { name: 'Erol Yılmaz Sosyal Bilimler Lisesi', location: 'Antalya' },
+// ];
 
  const logos = [
   '/referanslar/referanslar-1.png',
@@ -157,9 +180,9 @@ const textReferanslar = [
 
       <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 32px' }}>
         <Slider {...settings}>
-          {logos.map((src, idx) => (
-            <div key={idx} style={{ padding: '0 10px', textAlign: 'center' }}>
-              <Image src={src} alt={`Logo ${idx + 1}`} width={140} height={140} style={{ objectFit: 'contain' }} />
+          {referanslar.map((item, index) => (
+            <div key={index} style={{ padding: '0 10px', textAlign: 'center' }}>
+              <Image src={item.src} alt={`Logo ${index + 1}`} width={140} height={140} style={{ objectFit: 'contain' }} />
             </div>
           ))}
         </Slider>

@@ -10,15 +10,15 @@ export default function Loading() {
       fontSize: 20
     }}>
       <div className="loader" />
-      <span style={{ marginLeft: 12 }}>Yükleniyor...</span>
-
+      <span style={{ marginLeft: 12 }}></span>
+{/* Yükleniyor... */}
       <style jsx>{`
         .loader {
           border: 4px solid #eee;
           border-top: 4px solid #b40024;
           border-radius: 50%;
-          width: 32px;
-          height: 32px;
+          width: 50px;
+          height: 50px;
           animation: spin 1s linear infinite;
         }
 

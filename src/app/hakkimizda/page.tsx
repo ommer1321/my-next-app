@@ -100,6 +100,211 @@ export default function HakkimizdaContent() {
           />
         </div>
       </section>
+
+<Row style={{ backgroundColor: '#fff', padding: '40px 16px' }}>
+
+
+
+
+
+
+
+
+
+ <section style={{ backgroundColor: '#f8f8f8', padding: '10px 0' }}>
+      <Row justify="center" align="middle" gutter={[32, 32]}>
+        {/* Sol Görsel */}
+        <Col xs={22} md={10} style={{ textAlign: 'center' }}>  <Image
+            src="/kasspor-kurulum.png" // Görselin yolu (örnek: public/images/kurulum-montaj.png)
+            alt="Kurulum Montaj Bize Ait"
+            width={3001}
+            height={3001} style={{ maxWidth: '100%', height: 'auto' }}
+            />
+  </Col>
+
+        {/* Sağ Başlık ve Açıklama */}
+        <Col xs={22} md={12}>
+          <Title
+            level={3}
+            style={{
+              fontFamily: 'var(--font-montserrat)',
+              fontWeight: 700,
+              marginBottom: 12,
+            }}
+            >
+            Salonunuzun Kurulum ve Montajı Bize Emanet
+          </Title>
+          <div style={{ width: 40, height: 3, backgroundColor: '#000', marginBottom: 16 }} />
+          <Paragraph
+            style={{
+              fontSize: 16,
+              lineHeight: 1.8,
+              fontFamily: 'var(--font-montserrat)',
+              color: '#444',
+              marginBottom: 0,
+            }}
+            >
+            Kas Spor sipariş sonrası süreci titizlikle takip etmekte ve
+            müşterileri için kurulum montaj süreçlerini de satışa dahil etmektedir.
+          </Paragraph>
+        </Col>
+      </Row>
+    </section>
+
+
+ <section style={{  padding: '10px 0' }}>
+      <Row justify="center" align="middle" gutter={[32, 32]}>
+       
+
+        {/* Sağ Başlık ve Açıklama */}
+        <Col xs={22} md={12}>
+          <Title
+            level={3}
+            style={{
+              fontFamily: 'var(--font-montserrat)',
+              fontWeight: 700,
+              marginBottom: 12,
+            }}
+          >
+           Senin Rengin Senin Dünyan
+
+          </Title>
+          <div style={{ width: 40, height: 3, backgroundColor: '#000', marginBottom: 16 }} />
+          <Paragraph
+            style={{
+              fontSize: 16,
+              lineHeight: 1.8,
+              fontFamily: 'var(--font-montserrat)',
+              color: '#444',
+              marginBottom: 0,
+            }}
+          >
+           Kas Spor Renk paletinden seçeceğin renkler ile kendi makinanı kendin tasarla.
+          </Paragraph>
+        </Col>
+
+
+ {/* Sol Görsel */}
+        <Col xs={22} md={10} style={{ textAlign: 'center' }}>
+          <Image
+            src="/kasspor-renk.png" // Görselin yolu (örnek: public/images/kurulum-montaj.png)
+            alt="Kurulum Montaj Bize Ait"
+            width={3001}
+            height={3001}
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        </Col>
+
+
+      </Row>
+    </section>
+
+
+
+ <section style={{ backgroundColor: '#f8f8f8', padding: '10px 0' }}>
+      <Row justify="center" align="middle" gutter={[32, 32]}>
+
+
+
+        
+        {/* Sol Görsel */}
+        <Col xs={22} md={10} style={{ textAlign: 'center' }}>
+          <Image
+            src="/kasspor-garanti.png" // Görselin yolu (örnek: public/images/kurulum-montaj.png)
+            alt="Kurulum Montaj Bize Ait"
+            width={3001}
+            height={3001}
+            style={{ maxWidth: '100%', height: 'auto' }}
+            />
+        </Col>
+
+        {/* Sağ Başlık ve Açıklama */}
+        <Col xs={22} md={12}>
+          <Title
+            level={3}
+            style={{
+              fontFamily: 'var(--font-montserrat)',
+              fontWeight: 700,
+              marginBottom: 12,
+            }}
+            >
+2 Yıl Kesintisiz Ürün Garantisi
+          </Title>
+          <div style={{ width: 40, height: 3, backgroundColor: '#000', marginBottom: 16 }} />
+          <Paragraph
+            style={{
+              fontSize: 16,
+              lineHeight: 1.8,
+              fontFamily: 'var(--font-montserrat)',
+              color: '#444',
+              marginBottom: 0,
+            }}
+            >
+           Kas Spor Ürünlerinin tamamında 2 Yıl Ürün garantisi bulunmaktadır
+Müşterilerimiz ile olan birlikteliğimiz bu sayede uzun yıllar devam etmektedir.
+          </Paragraph>
+        </Col>
+      </Row>
+    </section>
+
+
+
+
+ <section style={{  padding: '10px 0' }}>
+      <Row justify="center" align="middle" gutter={[32, 32]}>
+       
+
+        {/* Sağ Başlık ve Açıklama */}
+        <Col xs={22} md={12}>
+          <Title
+            level={3}
+            style={{
+              fontFamily: 'var(--font-montserrat)',
+              fontWeight: 700,
+              marginBottom: 12,
+            }}
+            >
+10 Yıl Yedek Parça ve Teknik Servis Desteği
+
+          </Title>
+          <div style={{ width: 40, height: 3, backgroundColor: '#000', marginBottom: 16 }} />
+          <Paragraph
+            style={{
+              fontSize: 16,
+              lineHeight: 1.8,
+              fontFamily: 'var(--font-montserrat)',
+              color: '#444',
+              marginBottom: 0,
+            }}
+            >
+Kas Spor Ürünlerine verdiği Garanti ile beraber Yedek Parça ve Teknik Servis Desteği de Sağlamaktadır.
+Türkiye'nin farklı noktalarında bulunan teknik ekiplerimiz sizlerle satış sonrası 7/24 iletişim halinde olup herhangi bir destek durumunda bölgenize en yakın ekibi yönlendirecektir.          </Paragraph>
+        </Col>
+
+
+ {/* Sol Görsel */}
+        <Col xs={22} md={10} style={{ textAlign: 'center' }}>
+          <Image
+            src="/kasspor-yedek.png" // Görselin yolu (örnek: public/images/kurulum-montaj.png)
+            alt="Kurulum Montaj Bize Ait"
+            width={3001}
+            height={3001}
+            style={{ maxWidth: '100%', height: 'auto' }}
+            />
+        </Col>
+
+
+      </Row>
+    </section>
+
+
+
+
+
+
+
+            </Row>
+
     </>
   );
 }
