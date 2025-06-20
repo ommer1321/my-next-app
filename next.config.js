@@ -31,6 +31,11 @@ const nextConfig = {
         hostname: 'worthy-thrill-7eb2c2bbd6.media.strapiapp.com',
         pathname: '/**',
       },
+       {
+        protocol: 'http',
+        hostname: 'panel.cartollondon.com',
+        pathname: '/**',
+      },
     ],
     domains: ['www.kasspor.com.tr',],
     
