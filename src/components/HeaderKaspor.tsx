@@ -126,42 +126,77 @@ const handleOk = async () => {
             ))}
           </nav>
 
-       <div className="menu-buttons">
-  {['Teklif Al', '0 531 087 50 63', '0216 592 75 42'].map((label, index) => (
-    <button
-      key={index}
-      className="kaspor-btn"
-      onClick={index === 0 ? showModal : undefined} // Sadece ilk butona tıklandığında çalışır
-    >
-      {label}
-    </button>
-  ))}
+  <div className="menu-buttons flex flex-wrap gap-2">
+  {['Teklif Al', '0 531 087 50 63', '0216 592 75 42'].map((label, index) => {
+    if (index === 0) {
+      return (
+        <button key={index} className="kaspor-btn" onClick={showModal}>
+          {label}
+        </button>
+      );
+    } else {
+      const phone = label.replace(/\s+/g, '');
+      return (
+        <a
+          key={index}
+          href={`tel:${phone}`}
+          className="kaspor-btn inline-flex items-center justify-center"
+        >
+          {label}
+        </a>
+      );
+    }
+  })}
 </div>
+
 
         </div>
       </div>
 
       {/* Mobil Menü */}
       {mobileOpen && (
-        <div className="mobile-menu">
-          {menuItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMobileOpen(false)}
-              
-              className={`menu-link ${pathname.startsWith(item.href) ? 'active' : ''}`}
-            >
-              {item.label}
-            </Link>
-          ))}
-          {['Teklif Al', '0 531 087 50 63', '0216 592 75 42'].map((label, index) => (
-            <button key={index} 
-                    onClick={index === 0 ? showModal : undefined} // ✅ sadece "Teklif Al" butonu modal açar
+     <div className="mobile-menu">
+  {menuItems.map((item) => (
+    <Link
+      key={item.href}
+      href={item.href}
+      onClick={() => setMobileOpen(false)}
+      className={`menu-link ${pathname.startsWith(item.href) ? 'active' : ''}`}
+    >
+      {item.label}
+    </Link>
+  ))}
 
-            className="kaspor-btn">{label}</button>
-          ))}
-        </div>
+  {['Teklif Al', '0 531 087 50 63', '0216 592 75 42'].map((label, index) => {
+    if (index === 0) {
+      return (
+        <button
+          key={index}
+          onClick={() => {
+            showModal();
+            setMobileOpen(false);
+          }}
+          className="kaspor-btn"
+        >
+          {label}
+        </button>
+      );
+    } else {
+      const phone = label.replace(/\s+/g, '');
+      return (
+        <a
+          key={index}
+          href={`tel:${phone}`}
+          onClick={() => setMobileOpen(false)}
+          className="kaspor-btn inline-flex items-center justify-center"
+        >
+          {label}
+        </a>
+      );
+    }
+  })}
+</div>
+
       )}
 
 <Modal

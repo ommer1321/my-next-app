@@ -22,7 +22,7 @@ useEffect(() => {
       if (slug) {
         try {
           const { data } = await fetchUrunKategoriById(slug);
-          console.log('Kategori verisi:', data);
+          // console.log('Kategori verisi:', data);
 
           // const altUrunlerData = data?.map(item => ({
           //   name: item.urunKategoriName,
@@ -33,13 +33,13 @@ useEffect(() => {
 setAltUrunler(data);
 
         } catch (error) {
-          console.error('Kategori verisi alınırken hata:', error);
+          // console.error('Kategori verisi alınırken hata:', error);
         }
       }
     };
 
     fetchData();
-    console.log('altUrunler:', altUrunler);
+    // console.log('altUrunler:', altUrunler);
     
   }, [slug]);
 
@@ -115,7 +115,7 @@ setAltUrunler(data);
 
       <Row gutter={[24, 24]} justify="center">
         {altUrunler[0]?.urunlers?.map((item, index) => (
-          console.log('Ürün:', item),
+          // console.log('Ürün:', item),
           <Col key={index} xs={12} sm={12} md={6}>
             <Link href={`/urun/${item.slug}`} style={{ textDecoration: 'none' }}>
               <div className="product-card">

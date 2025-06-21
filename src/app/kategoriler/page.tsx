@@ -9,7 +9,7 @@ import { fetchUrunKategoriler, fetchUrunler } from '@/services/api';
   const { data } = await fetchUrunKategoriler();
 const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
 
-console.log(data,"kategori");
+// console.log(data,"kategori");
 
 
 // // image olanları forma uygun dönüştür
@@ -28,7 +28,7 @@ const products = data.map(item => ({
     : `${API_BASE_URL}${item.urunKategoriImage?.url || ''}`,
 }));
 
-console.log('Ürünler:', products,urunler,meta);
+// console.log('Ürünler:', products,urunler,meta);
 
 
 export default function UrunlerPage() {

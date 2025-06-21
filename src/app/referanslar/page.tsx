@@ -12,7 +12,7 @@ const { data } = await fetchReferanslar();
 
 export default function ReferanslarContent() {
 const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
-  console.log(data,1453);
+  // console.log(data,1453);
       
   const withImage = data.filter(item => item.image && item.image.url);
   const withoutImage = data.filter(item => !item.image || !item.image.url);
@@ -30,8 +30,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
         name: item.referansTitle,
         location: item.location || '', // location null olabilir
       }));
-      console.log('With Image:', referanslar);
-      console.log('Without Image:', textReferanslar);
+      // console.log('With Image:', referanslar);
+      // console.log('Without Image:', textReferanslar);
   // const referanslar = [
   //   { name: 'Ramada', src: '/referanslar/referanslar-1.png' },
   //   { name: 'Sivas Demirspor', src: '/referanslar/referanslar-1.png' },

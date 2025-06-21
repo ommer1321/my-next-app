@@ -1,18 +1,17 @@
 'use client';
 
-import { Col, Row, Typography, Button } from 'antd';
+import { Col, Row, Typography, Button, message } from 'antd';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import { BoldOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Modal,  Input } from 'antd';
-import { fetchUrunById, fetchUrunKategoriById } from '@/services/api';
-import {  useParams } from 'next/navigation';
+import { createFormEntry, fetchUrunById, fetchUrunKategoriById } from '@/services/api';
+import {  useParams, useRouter } from 'next/navigation';
 import { Urun, UrunlerResponse } from '@/intefaces/urunlerIF';
 import { log } from 'console';
 import { UrunKategori } from '@/intefaces/urunKategoriIF';
 import Link from 'next/link';
-
 const { TextArea } = Input;
 const { Title, Paragraph } = Typography;
 const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
@@ -24,21 +23,92 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
 export default function UrunDetay() {
   const sliderRef = useRef<any>(null);
 
-   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const showModal = () => setIsModalOpen(true);
-  const handleCancel = () => setIsModalOpen(false);
-  const handleOk = () => {
-    // form işlemleri
-    setIsModalOpen(false);
-  };
+  
   const params = useParams();
   const urunSlug = params?.slug;
   const [altUrunler, setAltUrunler] = useState<UrunKategori[]>([]);
   
   const [urunler, setUrunler] = useState<Urun[]>([]);
   const kategoriSlug = altUrunler[0]?.urunKategori?.slug ;  
-console.log('urunSlugaltUrunler[0]?.urunKategori?.slug:', altUrunler[0]?.urunKategori?.slug);
+// console.log('urunSlugaltUrunler[0]?.urunKategori?.slug:', altUrunler[0]?.urunKategori?.slug);
+
+
+
+
+
+
+const [loading, setLoading] = useState(false);
+
+const [showErrors, setShowErrors] = useState(false);
+
+const router = useRouter();
+
+   const [isModalOpen, setIsModalOpen] = useState(false);
+const [formState, setFormState] = useState({
+  name: '',
+  surname: '',
+  email: '',
+  tel: '',
+  desc: '',
+});
+
+
+const handleOk = async () => {
+      message.error('Lütfen tüm alanları doldurun');
+      // message.success('Form başarıyla gönderildi');
+
+  const { name, surname, email, tel, desc } = formState;
+  
+  if (!name || !surname || !email || !tel ) {
+    setShowErrors(true);
+    message.error('Lütfen tüm alanları doldurun');
+    return;
+  }
+  
+  setLoading(true);
+
+  try {
+    const response = await createFormEntry(formState);
+    const successCodes = [200, 201, 202];
+
+    if (successCodes.includes(response?.status || 200)) {
+    setIsModalOpen(false);
+
+      router.push('/tesekkurler'); // burada "router" olacak
+    } else {
+    setIsModalOpen(false);
+
+      message.error('Form gönderildi ancak bir sorun oluştu.');
+    }
+  } catch (error) {
+    console.error(error);
+    message.error('Form gönderilirken bir hata oluştu');
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  const showModal = () => setIsModalOpen(true);
+  const handleCancel = () => setIsModalOpen(false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 useEffect(() => {
   const fetchData = async () => {
@@ -74,7 +144,7 @@ useEffect(() => {
   fetchData();
 }, [urunSlug]);
 
-    console.log('urunler:2', altUrunler[0]?.urunlers || []);
+    // console.log('urunler:2', altUrunler[0]?.urunlers || []);
 const benzerUrunler = altUrunler[0]?.urunlers?.map((urun: any) => ({
   name: urun.urunName,
   slug: urun.slug,
@@ -85,10 +155,10 @@ const benzerUrunler = altUrunler[0]?.urunlers?.map((urun: any) => ({
 
 
 
-console.log('Benzer Ürünler:', benzerUrunler);  
+// console.log('Benzer Ürünler:', benzerUrunler);  
 
 const urunImageList = urunler[0]?.urunImage || [];
-console.log(urunImageList,12345);
+// console.log(urunImageList,12345);
 
 const productImages: string[] = urunImageList
   .map((image: any) => image?.url ? API_BASE_URL + image.url : null)
@@ -227,48 +297,78 @@ const productImages: string[] = urunImageList
   <div style={{ padding: '32px' }}>
     <Row gutter={16}>
       <Col xs={24} sm={12}>
-        <Input
-          placeholder="Adı"
-          size="large"
-          bordered={false}
-          style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
-        />
+      <Input
+  placeholder="Adı"
+  size="large"
+  bordered={false}
+  value={formState.name}
+  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+  style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
+/>
+{!formState.name && showErrors && (
+  <div style={{ color: 'red', fontSize: 12, marginBottom: 20 }}>
+    Adı alanı zorunludur.
+  </div>
+)}
       </Col>
       <Col xs={24} sm={12}>
-        <Input
-          placeholder="Soyadı"
-          size="large"
-          bordered={false}
-          style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
-        />
+     <Input
+  placeholder="Soyadı"
+  size="large"
+  bordered={false}
+  value={formState.surname}
+  onChange={(e) => setFormState({ ...formState, surname: e.target.value })}
+  style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
+/>
+{!formState.surname && showErrors && (
+  <div style={{ color: 'red', fontSize: 12, marginBottom: 20 }}>
+    Adı alanı zorunludur.
+  </div>
+)}
       </Col>
     </Row>
 
     <Row gutter={16}>
       <Col xs={24} sm={12}>
-        <Input
-          placeholder="E Posta"
-          size="large"
-          bordered={false}
-          style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
-        />
+       <Input
+  placeholder="E Posta"
+  size="large"
+  bordered={false}
+  value={formState.email}
+  onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+  style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
+/>
+{!formState.email && showErrors && (
+  <div style={{ color: 'red', fontSize: 12, marginBottom: 20 }}>
+    Adı alanı zorunludur.
+  </div>
+)}
       </Col>
       <Col xs={24} sm={12}>
-        <Input
-          placeholder="Telefon"
-          size="large"
-          bordered={false}
-          style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
-        />
+       <Input
+  placeholder="Telefon"
+  size="large"
+  bordered={false}
+  value={formState.tel}
+  onChange={(e) => setFormState({ ...formState, tel: e.target.value })}
+  style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
+/>
+{!formState.tel && showErrors && (
+  <div style={{ color: 'red', fontSize: 12, marginBottom: 20 }}>
+    Adı alanı zorunludur.
+  </div>
+)}
       </Col>
     </Row>
 
-    <TextArea
-      placeholder="Teklif Almak İstediğiniz Ürün"
-      autoSize={{ minRows: 3 }}
-      bordered={false}
-      style={{ borderBottom: '1px solid #ccc', marginBottom: 32 }}
-    />
+   <TextArea
+  placeholder="Teklif Almak İstediğiniz Ürün"
+  autoSize={{ minRows: 3 }}
+  bordered={false}
+  value={formState.desc}
+  onChange={(e) => setFormState({ ...formState, desc: e.target.value })}
+  style={{ borderBottom: '1px solid #ccc', marginBottom: 32 }}
+/>
 
     <Button
       type="primary"

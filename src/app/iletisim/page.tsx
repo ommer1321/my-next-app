@@ -24,7 +24,7 @@ const router = useRouter();
 
 const handleFinish = async (values: any) => {
 
-  console.log(1453, values);
+  // console.log(1453, values);
   
   setLoading(true);
 

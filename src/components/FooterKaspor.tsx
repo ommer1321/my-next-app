@@ -1,13 +1,75 @@
 'use client';
 
-import { Button, Col, Row, Typography } from 'antd';
+import { createFormEntry } from '@/services/api';
+import { Button, Col, Input, message, Modal, Row, Typography } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import { useState } from 'react';
 import { FaFacebookF, FaInstagram, FaYoutube, FaTwitter } from 'react-icons/fa';
 
 const { Title, Paragraph, Text } = Typography;
 
 export default function FooterKaspor() {
+const [loading, setLoading] = useState(false);
+const [showErrors, setShowErrors] = useState(false);
+
+const router = useRouter();
+
+   const [isModalOpen, setIsModalOpen] = useState(false);
+const [formState, setFormState] = useState({
+  name: '',
+  surname: '',
+  email: '',
+  tel: '',
+  desc: '',
+});
+
+
+const handleOk = async () => {
+      message.error('Lütfen tüm alanları doldurun');
+      // message.success('Form başarıyla gönderildi');
+
+  const { name, surname, email, tel, desc } = formState;
+  
+  if (!name || !surname || !email || !tel ) {
+    setShowErrors(true);
+    message.error('Lütfen tüm alanları doldurun');
+    return;
+  }
+  
+  setLoading(true);
+
+  try {
+    const response = await createFormEntry(formState);
+    const successCodes = [200, 201, 202];
+
+    if (successCodes.includes(response?.status || 200)) {
+    setIsModalOpen(false);
+
+      router.push('/tesekkurler'); // burada "router" olacak
+    } else {
+    setIsModalOpen(false);
+
+      message.error('Form gönderildi ancak bir sorun oluştu.');
+    }
+  } catch (error) {
+    console.error(error);
+    message.error('Form gönderilirken bir hata oluştu');
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  const showModal = () => setIsModalOpen(true);
+  const handleCancel = () => setIsModalOpen(false);
+
+
+
+  
   return (
     <footer>
       {/* Üst Kırmızı Alan */}
@@ -16,9 +78,14 @@ export default function FooterKaspor() {
         <Paragraph style={{ color: '#fff', fontSize: 18, marginBottom: 24 }}>
           Zorunluluk içermeyen bir fiyat teklifi almaktan çekinmeyin!
         </Paragraph>
-        <Button size="large" type="default" style={{ marginTop: 8, fontWeight: 600 }}>
-          Teklif Formu
-        </Button>
+        <Button
+  size="large"
+  type="default"
+  onClick={showModal}
+  style={{ marginTop: 8, fontWeight: 600 }}
+>
+  Teklif Formu
+</Button>
       </div>
 
       {/* Siyah Ana Footer */}
@@ -56,6 +123,7 @@ export default function FooterKaspor() {
               <li><Link href="/referanslar" style={{ color: '#fff' }}>REFERANSLAR</Link></li>
               <li><Link href="/urunler" style={{ color: '#fff' }}>ÜRÜNLER</Link></li>
               <li><Link href="/iletisim" style={{ color: '#fff' }}>İLETİŞİM</Link></li>
+              <li><Link href="/iade-sartlari" style={{ color: '#fff' }}>İADE ŞARTLARI</Link></li>
             </ul>
           </Col>
         </Row>
@@ -72,17 +140,144 @@ export default function FooterKaspor() {
     <a href="https://facebook.com/kasspor" target="_blank" rel="noopener noreferrer" style={{ color: '#3b5998' }}>
       <FaFacebookF size={32} />
     </a>
-    <a href="https://instagram.com/kasspor" target="_blank" rel="noopener noreferrer" style={{ color: '#E1306C' }}>
+    <a href="https://instagram.com/kassportr" target="_blank" rel="noopener noreferrer" style={{ color: '#E1306C' }}>
       <FaInstagram size={32} />
     </a>
-    <a href="https://youtube.com/kasspor" target="_blank" rel="noopener noreferrer" style={{ color: '#FF0000' }}>
+    <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: '#FF0000' }}>
       <FaYoutube size={32} />
     </a>
-    <a href="https://twitter.com/kasspor" target="_blank" rel="noopener noreferrer" style={{ color: '#1DA1F2' }}>
-      <FaTwitter size={32} />
-    </a>
+   
   </div>
 </div>
+
+<Modal
+  open={isModalOpen}
+  onCancel={handleCancel}
+  footer={null}
+  closeIcon={
+    <div
+      style={{
+        backgroundColor: '#b40011',
+        borderRadius: '60px',
+        padding: '3px 14px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4)',
+        cursor: 'pointer',
+        transition: 'box-shadow 0.3s',
+      }}
+    >
+      <span
+        style={{
+          color: '#fff',
+          fontWeight: 'bold',
+          fontSize: 16,
+          lineHeight: 1,
+        }}
+      >
+        X
+      </span>
+    </div>
+  }
+
+  // 🧩 EKRANDA TAŞMA OLMASIN DİYE:
+  centered={false} // ortalamayı kapat
+  style={{ top: 40 }} // yukarıdan 40px boşluk
+ 
+>
+  {/* Üst Başlık */}
+  <div style={{ background: '#b40024', padding: '16px', textAlign: 'center' }}>
+    <h2 style={{ color: '#fff', margin: 0, fontWeight: 600 }}>TEKLİF FORMU</h2>
+  </div>
+
+  {/* Form */}
+ {/* Form */}
+  {/* Form */}
+  <div style={{ padding: '32px' }}>
+    <Row gutter={16}>
+      <Col xs={24} sm={12}>
+        <Input
+          placeholder="Adı"
+          size="large"
+          bordered={false}
+            value={formState.name}
+            onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+          style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
+        />
+         {!formState.name && showErrors && (
+        <div style={{ color: 'red', fontSize: 12, marginBottom: 20 }}>Adı alanı zorunludur.</div>
+      )}
+      </Col>
+      <Col xs={24} sm={12}>
+        <Input
+          placeholder="Soyadı"
+          size="large"
+          bordered={false}
+           value={formState.surname}
+            onChange={(e) => setFormState({ ...formState, surname: e.target.value })}
+          style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
+        />
+         {!formState.surname && showErrors && (
+        <div style={{ color: 'red', fontSize: 12, marginBottom: 20 }}>Soyadı alanı zorunludur.</div>
+      )}
+      </Col>
+    </Row>
+
+    <Row gutter={16}>
+      <Col xs={24} sm={12}>
+        <Input
+          placeholder="E Posta"
+          size="large"
+          bordered={false}
+           value={formState.email}
+            onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+          style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
+        />
+         {!formState.email && showErrors && (
+        <div style={{ color: 'red', fontSize: 12, marginBottom: 20 }}>E-posta alanı zorunludur.</div>
+      )}
+      </Col>
+      <Col xs={24} sm={12}>
+        <Input
+          placeholder="Telefon"
+          size="large"
+          bordered={false}
+           value={formState.tel}
+            onChange={(e) => setFormState({ ...formState, tel: e.target.value })}
+          style={{ borderBottom: '1px solid #ccc', marginBottom: 24 }}
+        />
+         {!formState.tel && showErrors && (
+        <div style={{ color: 'red', fontSize: 12, marginBottom: 20 }}>Telefon alanı zorunludur.</div>
+      )}
+      </Col>
+    </Row>
+
+    <TextArea
+      placeholder="Teklif Almak İstediğiniz Ürün"
+      autoSize={{ minRows: 3 }}
+      bordered={false}
+   value={formState.desc}
+    onChange={(e) => setFormState({ ...formState, desc: e.target.value })}
+      style={{ borderBottom: '1px solid #ccc', marginBottom: 32 }}
+    />
+
+    <Button
+      type="primary"
+      size="large"
+        loading={loading} // burada gösteriliyor
+      onClick={handleOk}
+      style={{
+        background: '#b40024',
+        border: 'none',
+        fontWeight: 600,
+        width: 150,
+        display: 'block',
+        margin: '0 auto',
+      }}
+    >
+      GÖNDER
+    </Button>
+  </div> 
+
+</Modal>
 
 
       {/* Telif Hakkı */}

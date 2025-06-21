@@ -12,7 +12,7 @@ if (!API_BASE_URL) {
 
 export async function fetchUrunler(): Promise<UrunlerResponse> {
   try {
-    console.log('API_BASE_URL:', API_BASE_URL);
+    // console.log('API_BASE_URL:', API_BASE_URL);
 
     const response = await fetch(`${API_BASE_URL}/urunlers?populate=*`, {
       headers: {
