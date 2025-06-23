@@ -3,7 +3,6 @@ import { ReferansResponse } from "@/intefaces/referansIF";
 import { UrunKategoriResponse } from "@/intefaces/urunKategoriIF";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-const API_BEARER_URL = process.env.NEXT_PUBLIC_Bearer;
 
 
 if (!API_BASE_URL) {
@@ -123,13 +122,11 @@ type FormPayload = {
 
 export async function createFormEntry(formData: FormPayload): Promise<any> {
   const API_URL = API_BASE_URL + '/forms';
-  const BEARER_TOKEN =API_BEARER_URL
 
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${BEARER_TOKEN}`,
     },
     body: JSON.stringify({
       data: formData,
