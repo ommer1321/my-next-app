@@ -1,6 +1,7 @@
 'use client';
 
 import { Col, Row, Typography, Grid } from 'antd';
+import Head from 'next/head';
 import Image from 'next/image';
 import type { CSSProperties } from 'react';
 
@@ -32,6 +33,22 @@ export default function HakkimizdaContent() {
 
   return (
     <>
+
+
+{/*   
+   <Head>
+        <title>{meta.data.SEO.metaTitle}</title>
+        <meta name="description" content={meta.data.SEO.metaDescription} />
+        <meta name="robots" content={meta.data.SEO.metaRobots} />
+        <meta property="og:title" content={meta.data.SEO.metaTitle} />
+        <meta property="og:description" content={meta.data.SEO.metaDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={meta.data.SEO.canonicalURL} />
+       
+      </Head> */}
+
+
+
       {/* Hakkımızda Başlık ve Açıklama */}
       <section style={{ backgroundColor: '#fff', padding: isMobile ? '40px 0' : '80px 60px 60px' }}>
         <Row justify="center">

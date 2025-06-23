@@ -12,6 +12,7 @@ import { Urun, UrunlerResponse } from '@/intefaces/urunlerIF';
 import { log } from 'console';
 import { UrunKategori } from '@/intefaces/urunKategoriIF';
 import Link from 'next/link';
+import Head from 'next/head';
 const { TextArea } = Input;
 const { Title, Paragraph } = Typography;
 const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
@@ -187,9 +188,29 @@ const productImages: string[] = urunImageList
       { breakpoint: 576, settings: { slidesToShow: 1 } },
     ],
   };
-
+const seo = urunler?.[0]?.SEO;
+console.log(seo);
   return (
     <>
+
+
+{/* 
+  
+   <Head>
+        <title>{urunler[0]?.SEO.metaTitle}</title>
+        <meta name="description" content={urunler[0]?.SEO.metaDescription} />
+        <meta name="robots" content={urunler[0]?.SEO?.metaRobots} />
+        <meta property="og:title" content={urunler[0]?.SEO.metaTitle} />
+        <meta property="og:description" content={urunler[0]?.SEO.metaDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={urunler[0]?.SEO.canonicalURL} />
+       
+      </Head>
+ */}
+
+
+
+
      <section style={{ background: '#fff', padding: '60px 24px' }}>
       <Row
         gutter={[48, 48]}

@@ -51,6 +51,7 @@ export interface UrunKategori {
   urunKategoriImage?: Media;
   urunKategoriSlideImage?: Media;
   urunKategori?:any;
+  SEO:any;
 }
 
 export interface UrunKategoriResponse {
@@ -64,3 +65,20 @@ export interface UrunKategoriResponse {
     };
   };
 }
+
+export interface SEO {
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string;
+  metaRobots: Media;
+  canonicalUrl: string;
+}
+
+  //  "SEO": {
+  //               "id": 9,
+  //               "metaTitle": "Abdominal Oblique Crunch | Karın Kası Ekipmanı | Kasspor\n",
+  //               "metaDescription": "Abdominal oblique crunch cihazı ile oblik kaslarınızı güvenle çalıştırın. Dayanıklı tasarımı ve gelişmiş ekran özellikleriyle üstün performans.\n",
+  //               "keywords": "karın kası aleti, abdominal crunch, oblik crunch, spor ekipmanı, fitness makinesi, karın egzersizi\n",
+  //               "canonicalURL": null,
+  //               "metaRobots": "index, follow"
+  //           }

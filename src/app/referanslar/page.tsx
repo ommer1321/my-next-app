@@ -4,11 +4,13 @@ import { Col, Row,  Typography } from 'antd';
 import Image from 'next/image';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import dynamic from 'next/dynamic';
-import { fetchReferanslar } from '@/services/api';
+import { fetchReferanslar, fetchRefSeo } from '@/services/api';
+import Head from 'next/head';
 
 const { Title, Text } = Typography;
 const Slider = dynamic(() => import('react-slick'), { ssr: false });
 const { data } = await fetchReferanslar();
+  const meta = await fetchRefSeo();
 
 export default function ReferanslarContent() {
 const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
@@ -30,33 +32,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
         name: item.referansTitle,
         location: item.location || '', // location null olabilir
       }));
-      // console.log('With Image:', referanslar);
-      // console.log('Without Image:', textReferanslar);
-  // const referanslar = [
-  //   { name: 'Ramada', src: '/referanslar/referanslar-1.png' },
-  //   { name: 'Sivas Demirspor', src: '/referanslar/referanslar-1.png' },
-  //   { name: 'DoubleTree by Hilton', src: '/referanslar/referanslar-1.png' },
-  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-  //   { name: 'New Park Hotel', src: '/referanslar/referanslar-1.png' },
-  // ];
-
-// const textReferanslar = [
-//   { name: 'Nizip Spor Lisesi', location: 'Nizip' },
-//   { name: 'Berke Çakmak ( PT)', location: 'Şişli İstanbul' },
-//   { name: 'Ali Karaali ( PT)', location: 'Hatay' },
-//   { name: 'Hulk Gym', location: 'Beykoz İstanbul' },
-//   { name: 'Old School Gym', location: 'Esenyurt İstanbul' },
-//   { name: 'Mist İnşaat', location: 'Üsküdar İstanbul' },
-//   { name: 'Mist İnşaat', location: 'Üsküdar İstanbul' },
-//   { name: 'Emrecan Eren', location: 'Denizli' },
-//   { name: 'Gökhan Özer', location: 'Ankara' },
-//   { name: 'Ufuk Hoca Spor Salonu', location: 'Mersin' },
-//   { name: 'Hasan Yıldız (PT)', location: 'Nizip Gaziantep' },
-//   { name: 'Erol Yılmaz Sosyal Bilimler Lisesi', location: 'Antalya' },
-// ];
+      
 
  const logos = [
   '/referanslar/referanslar-1.png',
@@ -103,6 +79,21 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
 
     <>
     
+
+
+
+   <Head>
+        <title>{meta.data.SEO.metaTitle}</title>
+        <meta name="description" content={meta.data.SEO.metaDescription} />
+        <meta name="robots" content={meta.data.SEO.metaRobots} />
+        <meta property="og:title" content={meta.data.SEO.metaTitle} />
+        <meta property="og:description" content={meta.data.SEO.metaDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={meta.data.SEO.canonicalURL} />
+       
+      </Head>
+
+
     <section style={{ padding: '80px 40px', backgroundColor: '#fff' }}>
       <div style={{ textAlign: 'center', marginBottom: 48 }}>
         <Title level={2} style={{ fontFamily: 'var(--font-montserrat)' }}>

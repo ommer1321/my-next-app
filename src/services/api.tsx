@@ -1,4 +1,4 @@
-import { UrunlerResponse } from "@/intefaces/urunlerIF";
+import { RefSeoResponse, UrunlerResponse } from "@/intefaces/urunlerIF";
 import { ReferansResponse } from "@/intefaces/referansIF";
 import { UrunKategoriResponse } from "@/intefaces/urunKategoriIF";
 
@@ -14,7 +14,7 @@ export async function fetchUrunler(): Promise<UrunlerResponse> {
   try {
     // console.log('API_BASE_URL:', API_BASE_URL);
 
-    const response = await fetch(`${API_BASE_URL}/urunlers?populate=*`, {
+    const response = await fetch(`${API_BASE_URL}/urunlers?populate=*&pagination[page]=0&pagination[pageSize]=1000`, {
       headers: {
         Accept: 'application/json',
       },
@@ -39,7 +39,7 @@ export async function fetchUrunler(): Promise<UrunlerResponse> {
 
 export async function fetchUrunKategoriler(): Promise<UrunKategoriResponse> {
   const response = await fetch(
-    `${API_BASE_URL}/urun-kategoris?populate=*`,
+    `${API_BASE_URL}/urun-kategoris?populate=*&pagination[page]=0&pagination[pageSize]=1000`,
     {
       headers: {
         Accept: 'application/json',
@@ -57,7 +57,7 @@ export async function fetchUrunKategoriler(): Promise<UrunKategoriResponse> {
 
 export async function fetchUrunKategoriById(slug:any): Promise<UrunKategoriResponse> {
   const response = await fetch(
-    `${API_BASE_URL}/urun-kategoris?filters[slug][$eq]=${slug}&populate[0]=urunKategoriImage&populate[1]=urunlers&populate[2]=urunlers.urunImage&populate[3]=urunKategoriSlideImage`,
+    `${API_BASE_URL}/urun-kategoris?filters[slug][$eq]=${slug}&populate[0]=urunKategoriImage&populate[1]=urunlers&populate[2]=urunlers.urunImage&populate[3]=urunKategoriSlideImage&populate[4]=SEO&pagination[page]=0&pagination[pageSize]=1000`,
     {
       headers: {
         Accept: 'application/json',
@@ -95,7 +95,7 @@ export async function fetchUrunById(slug:any): Promise<UrunlerResponse> {
 
 
 export async function fetchReferanslar(): Promise<ReferansResponse> {
-  const response = await fetch(`${API_BASE_URL}/hakkimizdas?populate=*`, {
+  const response = await fetch(`${API_BASE_URL}/hakkimizdas?populate=*&pagination[page]=0&pagination[pageSize]=1000`, {
     headers: {
       Accept: 'application/json',
     },
@@ -143,4 +143,114 @@ export async function createFormEntry(formData: FormPayload): Promise<any> {
   }
 
   return response.json();
+}
+
+
+
+export async function fetchRefSeo(): Promise<RefSeoResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ref-seo?populate=*`, {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error(`RefSeo API hatası: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data as RefSeoResponse;
+  } catch (error) {
+    console.error('RefSeo datası çekerken hata oluştu:', error);
+    throw error;
+  }
+}
+
+
+export async function fetchHomeSeo(): Promise<RefSeoResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/anasayfa?populate=*`, {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error(`HomeSeo API hatası: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data as RefSeoResponse;
+  } catch (error) {
+    console.error('HomeSeo datası çekerken hata oluştu:', error);
+    throw error;
+  }
+}
+
+
+export async function fetchUrunlerSeo(): Promise<RefSeoResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/urunler-seo?populate=*`, {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error(`UrunlerSeo API hatası: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data as RefSeoResponse;
+  } catch (error) {
+    console.error('UrunlerSeo datası çekerken hata oluştu:', error);
+    throw error;
+  }
+}
+
+export async function fetchIletisimSeo(): Promise<RefSeoResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/iletisim-seo?populate=*`, {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error(`IletisimSeo API hatası: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data as RefSeoResponse;
+  } catch (error) {
+    console.error('IletisimSeo datası çekerken hata oluştu:', error);
+    throw error;
+  }
+}
+
+
+export async function fetchHakkimizdaSeo(): Promise<RefSeoResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/hakkimizda-seo?populate=*`, {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error(`HakkimizdaSeo API hatası: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data as RefSeoResponse;
+  } catch (error) {
+    console.error('HakkimizdaSeo datası çekerken hata oluştu:', error);
+    throw error;
+  }
 }

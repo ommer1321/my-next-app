@@ -10,6 +10,7 @@ export interface Urun {
   urunImage :any;
   publishedAt: string;
   urun_kategori?: any;
+  SEO:any;
 }
 
 
@@ -27,3 +28,22 @@ export interface UrunlerResponse {
   meta: PaginationMeta;
 }
 
+
+export type RefSeoResponse = {
+  data: {
+    id: number;
+    documentId: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    SEO: {
+      id: number;
+      metaTitle: string;
+      metaDescription: string;
+      keywords: string;
+      canonicalURL: string;
+      metaRobots: string;
+    };
+  };
+  meta: any;
+};

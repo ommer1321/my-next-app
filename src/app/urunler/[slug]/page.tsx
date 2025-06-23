@@ -45,8 +45,8 @@ setAltUrunler(data);
 
 
 
-
-
+const seo = altUrunler?.[0]?.SEO;
+console.log(seo);
 
 
 
