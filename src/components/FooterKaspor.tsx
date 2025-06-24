@@ -6,6 +6,7 @@ import TextArea from 'antd/es/input/TextArea';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import styles from './MobileStickyBar.module.css';
 
 import { useState } from 'react';
 import { FaFacebookF, FaInstagram, FaYoutube, FaTwitter } from 'react-icons/fa';
@@ -72,6 +73,36 @@ const handleOk = async () => {
   
   return (
     <footer>
+
+
+ <div className={styles.callBox}>
+      <a href="tel:+905310875063">
+        <Image
+          src="/597177.png"
+          alt="Call"
+          width={20}
+          height={20}
+        />
+        Hemen Ara
+      </a>
+    </div>
+
+
+
+ <a
+      href="https://wa.me/905300272457"
+      target="_blank"
+      rel="noopener noreferrer"
+      className={styles.whatsappButton}
+    >
+      <Image
+        src="/733585.png"
+        alt="WhatsApp"
+        width={32}
+        height={32}
+      />
+    </a>
+
       {/* Üst Kırmızı Alan */}
       <div style={{ backgroundColor: '#b40024', padding: '30px 20px', textAlign: 'center' }}>
         <Title style={{ color: '#fff', fontSize: '36px', fontWeight: 800 }} level={2}>Hala düşünüyor musun?</Title>
