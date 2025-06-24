@@ -91,15 +91,15 @@ export default function HakkimizdaContent() {
             </Paragraph>
           </Col>
 
-          <Col xs={24} md={10}>
+          <Col xs={24} md={6}>
             <video
-              src="hakkimizda-video.m4v"
+              src="hakkimizda-dikey.mp4"
               autoPlay
               loop
               playsInline
               muted
               controls
-              style={{ width: '100%', borderRadius: 8 }}
+              style={{ width: '100%', borderRadius: 8, boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' , height: 'auto', objectFit: 'cover', maxHeight: 500, maxWidth: 400 }}
             />
           </Col>
         </Row>

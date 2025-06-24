@@ -51,6 +51,7 @@ export interface UrunKategori {
   urunKategoriImage?: Media;
   urunKategoriSlideImage?: Media;
   urunKategori?:any;
+  order:any;
   SEO:any;
 }
 

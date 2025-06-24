@@ -50,8 +50,12 @@ export async function fetchUrunKategoriler(): Promise<UrunKategoriResponse> {
   if (!response.ok) {
     throw new Error(`API hatası: ${response.status}`);
   }
+  const json: UrunKategoriResponse = await response.json();
 
-  return response.json();
+  // order'a göre sıralama (string olduğu için sayıya çeviriyoruz)
+  json.data.sort((a, b) => Number(a.order) - Number(b.order));
+
+  return json;
 }
 
 export async function fetchUrunKategoriById(slug:any): Promise<UrunKategoriResponse> {
