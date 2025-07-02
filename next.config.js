@@ -41,6 +41,11 @@ const nextConfig = {
         hostname: 'panel.cartollondon.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'panel.kasspor.com.tr',
+        pathname: '/**',
+      },
     ],
     domains: ['www.kasspor.com.tr',],
     

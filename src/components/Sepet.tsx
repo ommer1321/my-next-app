@@ -35,50 +35,19 @@ const SideCart: React.FC<SideCartProps> = ({
   const router = useRouter();
 
   const handleOk = async (values: any) => {
+    const cartIds = getCookie('urun_list');
+    const idList = cartIds ? cartIds.split(',') : [];
 
+    const matchedNames = cartItems
+      ?.filter(item => idList.includes(item.id))
+      .map(item => item.name);
 
-    const cartIds = getCookie('urun_list'); // ör: "123,456"
-
-        // id listesine çevir
-
-        const idList = cartIds ? cartIds.split(',') : [];
-
-        // cartItems içinden id eşleşenlerin isimlerini topla
-
-        const matchedNames = cartItems
-
-        ?.filter(item => idList.includes(item.id))
-
-        .map(item => item.name);
-
-
-      
-    // Ürün adlarını virgülle ayır
     const productNamesStr = matchedNames.length > 0 
       ? matchedNames.join(', ')
       : 'Ürün bulunamadı';
-      
-      // desc oluştur
-        const descWithProducts = `Sepet Ürünleri: ${productNamesStr}\n\nKullanıcı notu: ${values.desc || ''}`;
-    values.desc = descWithProducts; 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    const descWithProducts = `Sepet Ürünleri: ${productNamesStr}\n\nKullanıcı notu: ${values.desc || ''}`;
+    values.desc = descWithProducts;
 
     console.log("Form Values:", values);
     setLoading(true);
@@ -89,7 +58,7 @@ const SideCart: React.FC<SideCartProps> = ({
 
       if (successCodes.includes(response?.status || 200)) {
         toast.success('Form başarıyla gönderildi');
-        onClose(); // drawer'ı kapat
+        onClose();
         router.push('/tesekkurler');
       } else {
         toast.error('Form gönderildi ancak bir sorun oluştu.');
@@ -109,7 +78,9 @@ const SideCart: React.FC<SideCartProps> = ({
       onClose={onClose}
       open={open}
       width={380}
-      bodyStyle={{ position: "relative", overflow: "hidden" }}
+      styles={{
+        body: { position: "relative", overflow: "hidden" }
+      }}
     >
       {cartItems.length === 0 ? (
         <p>Sepetiniz boş.</p>
