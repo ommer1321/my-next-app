@@ -5,6 +5,7 @@ import { Col, Row, Form, Input, Button, Typography, message } from "antd";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 const { Title } = Typography;
+import toast from 'react-hot-toast';
 
 export default function IletisimPage() {
 
@@ -39,11 +40,11 @@ const handleFinish = async (values: any) => {
     } else {
   setLoading(false);
 
-      message.error('Form gönderildi ancak bir sorun oluştu.');
+      toast.error('Form gönderildi ancak bir sorun oluştu.');
     }
   } catch (error) {
     console.error(error);
-    message.error('Form gönderilirken bir hata oluştu');
+    toast.error('Form gönderilirken bir hata oluştu');
   } finally {
   }
 

@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Montserrat } from 'next/font/google';
 
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider, theme, App as Antdapp } from "antd";
 import "antd/dist/reset.css";
 import Script from "next/script";
 
 import HeaderKaspor from "@/components/HeaderKaspor";
 import FooterKaspor from "@/components/FooterKaspor";
+import { Toaster } from "react-hot-toast";
+import { CartProvider } from "@/components/Context";
 // Opsiyonel: Sosyal footer (sabit WhatsApp ve sosyal ikonlar)
 // import SocialFooter from '@/components/SocialFooter';
 
@@ -88,7 +90,8 @@ export default function RootLayout({
 
       <body
         className={` ${montserrat.variable} antialiased`}
-      >
+        >
+        <CartProvider>
          <noscript>
     <iframe
       src="https://www.googletagmanager.com/ns.html?id=GTM-MFHLRH2G"
@@ -108,11 +111,20 @@ export default function RootLayout({
             },
           }}
         >
+        
+        
+<Toaster position="top-right" reverseOrder={false} />
           {/* Her sayfa için ortak header */}
           <HeaderKaspor />
 
           {/* Sayfa içeriği */}
-          <main style={{ minHeight: "calc(100vh - 200px)" }}>{children}</main>
+          <main style={{ minHeight: "calc(100vh - 200px)" }}>
+            <Antdapp>
+
+
+            {children}
+            </Antdapp>
+            </main>
 
           {/* Her sayfa için ortak footer */}
           <FooterKaspor />
@@ -120,6 +132,7 @@ export default function RootLayout({
           {/* Opsiyonel: sabit WhatsApp butonu ve sosyal ikonlar */}
           {/* <SocialFooter /> */}
         </ConfigProvider>
+             </CartProvider>
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import { createFormEntry } from '@/services/api';
-import { Button, Col, Input, message, Modal, Row, Typography } from 'antd';
+import { Button, Col, Input,  Modal, Row, Typography } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,6 +12,8 @@ import { useState } from 'react';
 import { FaFacebookF, FaInstagram, FaYoutube, FaTwitter } from 'react-icons/fa';
 
 const { Title, Paragraph, Text } = Typography;
+import toast from 'react-hot-toast';
+import CookieConsent from './CookieConsent';
 
 export default function FooterKaspor() {
 const [loading, setLoading] = useState(false);
@@ -30,14 +32,14 @@ const [formState, setFormState] = useState({
 
 
 const handleOk = async () => {
-      message.error('Lütfen tüm alanları doldurun');
-      // message.success('Form başarıyla gönderildi');
+      toast.error('Lütfen tüm alanları doldurun');
+      // toast.success('Form başarıyla gönderildi');
 
   const { name, surname, email, tel, desc } = formState;
   
   if (!name || !surname || !email || !tel ) {
     setShowErrors(true);
-    message.error('Lütfen tüm alanları doldurun');
+    toast.error('Lütfen tüm alanları doldurun');
     return;
   }
   
@@ -54,11 +56,11 @@ const handleOk = async () => {
     } else {
     setIsModalOpen(false);
 
-      message.error('Form gönderildi ancak bir sorun oluştu.');
+      toast.error('Form gönderildi ancak bir sorun oluştu.');
     }
   } catch (error) {
     console.error(error);
-    message.error('Form gönderilirken bir hata oluştu');
+    toast.error('Form gönderilirken bir hata oluştu');
   } finally {
     setLoading(false);
   }
@@ -73,6 +75,7 @@ const handleOk = async () => {
   
   return (
     <footer>
+        <CookieConsent />
 
 
  <div className={styles.callBox}>
@@ -152,7 +155,7 @@ const handleOk = async () => {
               <li><Link href="/" style={{ color: '#fff' }}>ANASAYFA</Link></li>
               <li><Link href="/hakkimizda" style={{ color: '#fff' }}>HAKKIMIZDA</Link></li>
               <li><Link href="/referanslar" style={{ color: '#fff' }}>REFERANSLAR</Link></li>
-              <li><Link href="/urunler" style={{ color: '#fff' }}>ÜRÜNLER</Link></li>
+              <li><Link href="/kategoriler" style={{ color: '#fff' }}>ÜRÜNLER</Link></li>
               <li><Link href="/iletisim" style={{ color: '#fff' }}>İLETİŞİM</Link></li>
               <li><Link href="/iade-sartlari" style={{ color: '#fff' }}>İADE ŞARTLARI</Link></li>
             </ul>

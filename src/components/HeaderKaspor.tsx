@@ -5,11 +5,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button, Col, Input, message, Modal, Row, theme } from 'antd';
 import { darkenColor } from '@/utils/color';
-import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { MenuOutlined, CloseOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
 import TextArea from 'antd/es/input/TextArea';
-import { createFormEntry } from '@/services/api';
+import { createFormEntry, fetchUrunler } from '@/services/api';
 import { useRouter } from 'next/navigation';
+import SideCart from './Sepet';
+import toast from 'react-hot-toast';
+import { useCart } from './Context';
 
 export default function HeaderKaspor() {
   const pathname = usePathname();
@@ -17,9 +20,10 @@ export default function HeaderKaspor() {
   const [mobileOpen, setMobileOpen] = useState(false);
 const [loading, setLoading] = useState(false);
 const [showErrors, setShowErrors] = useState(false);
-
 const router = useRouter();
 
+const API_BASE_URL  = process.env.NEXT_PUBLIC_CMS_BASE_URL ;
+//
    const [isModalOpen, setIsModalOpen] = useState(false);
 const [formState, setFormState] = useState({
   name: '',
@@ -29,16 +33,23 @@ const [formState, setFormState] = useState({
   desc: '',
 });
 
+const [isCartOpen, setIsCartOpen] = useState(false);
+const { cartItems, refreshCart } = useCart(); // VAR
+
+// 1453
+
+
+
 
 const handleOk = async () => {
-      message.error('Lütfen tüm alanları doldurun');
-      // message.success('Form başarıyla gönderildi');
+      toast.error('Lütfen tüm alanları doldurun');
+      // toast.success('Form başarıyla gönderildi');
 
   const { name, surname, email, tel, desc } = formState;
   
   if (!name || !surname || !email || !tel ) {
     setShowErrors(true);
-    message.error('Lütfen tüm alanları doldurun');
+    toast.error('Lütfen tüm alanları doldurun');
     return;
   }
   
@@ -55,11 +66,11 @@ const handleOk = async () => {
     } else {
     setIsModalOpen(false);
 
-      message.error('Form gönderildi ancak bir sorun oluştu.');
+      toast.error('Form gönderildi ancak bir sorun oluştu.');
     }
   } catch (error) {
     console.error(error);
-    message.error('Form gönderilirken bir hata oluştu');
+    toast.error('Form gönderilirken bir hata oluştu');
   } finally {
     setLoading(false);
   }
@@ -79,6 +90,20 @@ const handleOk = async () => {
     { label: 'İLETİŞİM', href: '/iletisim' },
   ];
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   return (
     <header
       style={{
@@ -103,6 +128,7 @@ const handleOk = async () => {
         <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
           <Image src="/logo.png" alt="Kaspor Logo" width={180} height={60} />
         </Link>
+       
 
         {/* Mobile Menü Toggle */}
         <button
@@ -147,6 +173,12 @@ const handleOk = async () => {
       );
     }
   })}
+
+ 
+<button className="kaspor-btn" onClick={() => setIsCartOpen(true)}>
+  <ShoppingCartOutlined style={{ fontSize: 18, marginRight: 4 }} />
+  Sepetim ({cartItems.length})
+</button>
 </div>
 
 
@@ -195,9 +227,39 @@ const handleOk = async () => {
       );
     }
   })}
+
+  
+     
+<button className="kaspor-btn" onClick={() => setIsCartOpen(true)}>
+  <ShoppingCartOutlined style={{ fontSize: 18, marginRight: 4 }} />
+  Sepetim ({cartItems.length})
+</button>
 </div>
 
       )}
+
+        {/* 🔥 Sepet Drawer */}
+    <SideCart
+  open={isCartOpen}
+  onClose={() => setIsCartOpen(false)}
+  cartItems={cartItems}
+  onCheckout={() => {
+    alert(`Sipariş veriliyor: ${cartItems.map(c => c.name).join(",")}`);
+    setIsCartOpen(false);
+  }}
+  onRemove={(idToRemove) => {
+   let currentList = `; ${document.cookie}`.split(`; urun_list=`);
+if (currentList.length === 2) {
+  let ids = currentList.pop()!.split(";").shift()!.split(",").filter((x) => x);
+  ids = ids.filter((id) => id !== idToRemove);
+  document.cookie = `urun_list=${ids.join(",")}; path=/;`;
+}
+refreshCart(); // 🔥 context'ten yenile
+toast.error("Ürün sepetten çıkarıldı");
+
+  }}
+/>
+
 
 <Modal
   open={isModalOpen}

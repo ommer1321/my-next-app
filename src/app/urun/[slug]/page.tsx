@@ -1,6 +1,6 @@
 'use client';
 
-import { Col, Row, Typography, Button, message } from 'antd';
+import { Col, Row, Typography, Button } from 'antd';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
@@ -13,6 +13,11 @@ import { log } from 'console';
 import { UrunKategori } from '@/intefaces/urunKategoriIF';
 import Link from 'next/link';
 import Head from 'next/head';
+import { getCookie, setCookie } from '@/utils/cookieUtils';
+import toast from 'react-hot-toast';
+import { useCart } from '@/components/Context';
+
+
 const { TextArea } = Input;
 const { Title, Paragraph } = Typography;
 const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
@@ -23,6 +28,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_CMS_BASE_URL;
 
 export default function UrunDetay() {
   const sliderRef = useRef<any>(null);
+const { refreshCart } = useCart();
 
 
   
@@ -55,15 +61,48 @@ const [formState, setFormState] = useState({
 });
 
 
+
+
+const [inCart, setInCart] = useState(false);
+  const productId = params?.slug as string;
+
+
+  useEffect(() => {
+    // sayfa açılınca bu ürün cookie'de var mı kontrol et
+    const list = getCookie("urun_list");
+    if (list) {
+      const ids = list.split(",").filter((x) => x);
+      setInCart(ids.includes(productId));
+    }
+  }, [productId]);
+const handleToggleCart = () => {
+  let currentList = getCookie("urun_list");
+  let ids = currentList ? currentList.split(",").filter((x) => x) : [];
+
+  if (ids.includes(productId)) {
+    ids = ids.filter((id) => id !== productId);
+    toast.error('Ürün sepetten çıkarıldı');
+  } else {
+    ids.push(productId);
+    toast.success('Ürün sepete eklendi');
+  }
+
+  setCookie("urun_list", ids.join(","));
+  setInCart(ids.includes(productId));
+  refreshCart(); // 🔥
+};
+
+
+
 const handleOk = async () => {
-      message.error('Lütfen tüm alanları doldurun');
-      // message.success('Form başarıyla gönderildi');
+      toast.error('Lütfen tüm alanları doldurun');
+      // toast.success('Form başarıyla gönderildi');
 
   const { name, surname, email, tel, desc } = formState;
   
   if (!name || !surname || !email || !tel ) {
     setShowErrors(true);
-    message.error('Lütfen tüm alanları doldurun');
+    toast.error('Lütfen tüm alanları doldurun');
     return;
   }
   
@@ -80,11 +119,11 @@ const handleOk = async () => {
     } else {
     setIsModalOpen(false);
 
-      message.error('Form gönderildi ancak bir sorun oluştu.');
+      toast.error('Form gönderildi ancak bir sorun oluştu.');
     }
   } catch (error) {
     console.error(error);
-    message.error('Form gönderilirken bir hata oluştu');
+    toast.error('Form gönderilirken bir hata oluştu');
   } finally {
     setLoading(false);
   }
@@ -261,21 +300,46 @@ console.log(seo);
           <Paragraph  style={{ whiteSpace: 'pre-line', fontSize: '16px' ,color:"#555"}}>
              {urunler[0]?.urunDesc || ''}
           </Paragraph>
-<div style={{ display: 'flex', justifyContent: 'center' }}>
+<div
+  style={{
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '16px',
+    flexWrap: 'wrap',
+    marginTop: '24px',
+  }}
+>
   <Button
     type="primary"
     style={{
-      width: 422,
+      flex: '1 1 150px',
+      maxWidth: '322px',
       background: '#b40024',
       border: 'none',
-      marginBottom: 12,
       fontWeight: 600,
+      padding: '12px 24px',
     }}
-      onClick={showModal}
+    onClick={showModal}
   >
     Teklif Al
   </Button>
+
+  <Button
+    type="primary"
+    style={{
+      flex: '1 1 150px',
+      maxWidth: '322px',
+      background: inCart ? '#888' : '#b40024',
+      border: 'none',
+      fontWeight: 600,
+      padding: '12px 24px',
+    }}
+    onClick={handleToggleCart}
+  >
+    {inCart ? 'Sepetten Çıkar' : 'Sepete Ekle'}
+  </Button>
 </div>
+
 <Modal
   open={isModalOpen}
   onCancel={handleCancel}
@@ -309,6 +373,8 @@ console.log(seo);
   style={{ top: 40 }} // yukarıdan 40px boşluk
  
 >
+
+  
   {/* Üst Başlık */}
   <div style={{ background: '#b40024', padding: '16px', textAlign: 'center' }}>
     <h2 style={{ color: '#fff', margin: 0, fontWeight: 600 }}>TEKLİF FORMU</h2>
@@ -408,7 +474,7 @@ console.log(seo);
     </Button>
   </div>
 </Modal>
-
+  
 
 
           <Paragraph style={{ color: '#555' }}>

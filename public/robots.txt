@@ -1,0 +1,15 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /gizli-sayfa
+Disallow: /api
+
+# Host
+Host: https://www.kasspor.com.tr
+
+# Sitemaps
+Sitemap: https://www.kasspor.com.tr/sitemap.xml
+Sitemap: https://www.kasspor.com.tr/server-sitemap-urunler.xml
+Sitemap: https://www.kasspor.com.tr/server-sitemap-kategori.xml
+Sitemap: https://www.kasspor.com.tr/server-sitemap-static.xml

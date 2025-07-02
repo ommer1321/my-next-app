@@ -2,7 +2,8 @@ import { SitemapStream, streamToPromise } from 'sitemap';
 import { Readable } from 'stream';
 import { NextResponse } from 'next/server';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, '') || 'https://www.kasspor.com.tr';
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, '') || 'https://www.kasspor.com.tr';
+const BASE_URL =  'https://www.kasspor.com.tr';
 
 export async function GET() {
   const staticUrls = [
