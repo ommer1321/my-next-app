@@ -158,6 +158,7 @@ const handleOk = async () => {
               <li><Link href="/kategoriler" style={{ color: '#fff' }}>ÜRÜNLER</Link></li>
               <li><Link href="/iletisim" style={{ color: '#fff' }}>İLETİŞİM</Link></li>
               <li><Link href="/iade-sartlari" style={{ color: '#fff' }}>İADE ŞARTLARI</Link></li>
+              <li><Link href="/mesafeli-satis-sozlesmesi" style={{ color: '#fff' }}>MESAFELİ SATIŞ SÖZLEŞMESİ</Link></li>
             </ul>
           </Col>
         </Row>

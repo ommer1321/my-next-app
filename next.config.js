@@ -1,37 +1,35 @@
-const withLess = require('next-with-less');
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
 
   eslint: {
-    ignoreDuringBuilds: true, // ✅ Build sırasında lint hatalarını yoksay
+    ignoreDuringBuilds: true,
   },
 
   typescript: {
-    ignoreBuildErrors: true, // ✅ TypeScript hataları build'i durdurmasın (isteğe bağlı)
+    ignoreBuildErrors: true,
   },
 
   lessLoaderOptions: {
     lessOptions: {
-      javascriptEnabled: true, // ✅ Less dosyalarında JS kullanılmasına izin ver
+      javascriptEnabled: true,
     },
   },
 
   images: {
-       remotePatterns: [
+    remotePatterns: [
       {
         protocol: 'http',
         hostname: 'localhost',
         port: '1337',
         pathname: '/uploads/**',
       },
-       {
+      {
         protocol: 'https',
         hostname: 'worthy-thrill-7eb2c2bbd6.media.strapiapp.com',
         pathname: '/**',
       },
-       {
+      {
         protocol: 'http',
         hostname: 'panel.cartollondon.com',
         pathname: '/**',
@@ -47,19 +45,50 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    domains: ['www.kasspor.com.tr',],
-    
-    // loader: 'custom',         // Eğer dış kaynaklı optimize resim kullanacaksan aç
-    // loaderFile: './my-loader.ts', // Cloudinary gibi hizmet için özel loader tanımı
+    domains: ['www.kasspor.com.tr'],
   },
 
-  /**
-   * 📦 Statik HTML çıktısı almak için export modu aktif.
-   * Bu ayar sayesinde `npm run build` komutu sonrası `out/` klasörü oluşur.
-   * SSR sayfalar desteklenmez! Yalnızca SSG (Static) sayfalar dışa aktarılabilir.
-   * Yayın sonrası bu satırı kaldırmak istersen: output: 'export' satırını sil yeterli.
-   */
-  // output: 'export',
+  async redirects() {
+    try {
+      // 🔥 require yerine dynamic import
+      const fetch = (await import('node-fetch')).default;
+
+      const res = await fetch('https://panel.kasspor.com.tr/api/redirects'
+      // const res = await fetch('http://localhost:1337/api/redirects'
+        , {
+        headers: { Accept: 'application/json' },
+      });
+
+      if (!res.ok) {
+        console.error('Strapi API hatası:', res.status);
+        return [];
+      }
+
+      const json = await res.json();
+
+      const redirects = json.data.map(item => {
+        const oldPath = '/' + item.oldUrl.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/|\/$/g, '');
+        const newPath = '/' + item.newUrl.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/|\/$/g, '');
+
+   // permanent null ise default true, false ise geçici
+  const isPermanent = item.permanent === null ? true : item.permanent;
+
+  return {
+    source: oldPath === '/' ? '/' : oldPath,
+    destination: newPath === '/' ? '/' : newPath,
+    permanent: isPermanent,
+    statusCode: isPermanent ? 301 : 302
+  };
+      });
+
+      console.log('✔ Redirects yüklendi:', redirects);
+      return redirects;
+    } catch (err) {
+      console.error('Redirect çekme hatası:', err);
+      return [];
+    }
+  },
 };
 
+const withLess = require('next-with-less');
 module.exports = withLess(nextConfig);
