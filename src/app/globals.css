@@ -26,3 +26,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color:#ededed !important;
+    color: #0a0a0a !important;
+  }
+}
