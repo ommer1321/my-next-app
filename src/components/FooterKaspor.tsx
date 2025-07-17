@@ -157,8 +157,10 @@ const handleOk = async () => {
               <li><Link href="/referanslar" style={{ color: '#fff' }}>REFERANSLAR</Link></li>
               <li><Link href="/kategoriler" style={{ color: '#fff' }}>ÜRÜNLER</Link></li>
               <li><Link href="/iletisim" style={{ color: '#fff' }}>İLETİŞİM</Link></li>
+              <li><Link href="/bloglar" style={{ color: '#fff' }}>BLOGLAR</Link></li>
               <li><Link href="/iade-sartlari" style={{ color: '#fff' }}>İADE ŞARTLARI</Link></li>
               <li><Link href="/mesafeli-satis-sozlesmesi" style={{ color: '#fff' }}>MESAFELİ SATIŞ SÖZLEŞMESİ</Link></li>
+              <li><Link href="/cerez-politikasi" style={{ color: '#fff' }}>ÇEREZ POLİTİKASI</Link></li>
             </ul>
           </Col>
         </Row>
