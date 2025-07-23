@@ -88,6 +88,7 @@ const handleOk = async () => {
     { label: 'REFERANSLAR', href: '/referanslar' },
     { label: 'ÜRÜNLER', href: '/kategoriler' },
     { label: 'İLETİŞİM', href: '/iletisim' },
+    { label: '3D Studyo', href: '/studio' },
   ];
 
 
