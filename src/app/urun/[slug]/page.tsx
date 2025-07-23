@@ -205,11 +205,7 @@ const productImages: string[] = urunImageList
   .filter(Boolean);
 
 
-useEffect(() => {
-  if (sliderRef.current) {
-    sliderRef.current.slickGoTo(1); // index 1 = 2. ürün
-  }
-}, [benzerUrunler]);
+
   const mainSliderSettings = {
     dots: false,
     arrows: true,
@@ -220,8 +216,6 @@ useEffect(() => {
   };
 
   const similarSliderSettings = {
-      initialSlide: 1, // 👈 2. üründen başlasın (index 1)
-
     infinite: false,
     speed: 500,
     slidesToShow: 4,
