@@ -80,7 +80,7 @@ const SideCart: React.FC<SideCartProps> = ({
       open={open}
       width={380}
       styles={{
-        body: { position: "relative", overflow: "hidden" }
+    body: { position: "relative", overflowY: "auto", maxHeight: "100vh", paddingBottom: "24px" }
       }}
     >
       {cartItems.length === 0 ? (
