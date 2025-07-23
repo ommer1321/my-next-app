@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { createFormEntry } from "@/services/api";
 import { useRouter } from 'next/navigation';
 import { getCookie } from "@/utils/cookieUtils";
+import { TeklifPdfListesiPDFExport } from "./Teklif";  
 
 type CartItem = {
   id: string;
@@ -130,8 +131,37 @@ const SideCart: React.FC<SideCartProps> = ({
                 width: "100%"
               }}
             >
-              Sipariş Bilgilerini Gir
+              Sepet Teklif Talebi Bilgilerini Gir
             </Button>
+
+
+<Button
+  type="default"
+  style={{ marginTop: 12, width: '100%' }}
+  onClick={() => TeklifPdfListesiPDFExport(cartItems)}
+>
+  PDF Teklif İndir
+</Button>
+
+  
+  <div
+    style={{
+      marginTop: 16,
+      padding: '12px 16px',
+      backgroundColor: '#fef2f2',
+      border: '1px solid #b40024',
+      borderRadius: '8px',
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: '10px',
+    }}
+  >
+    <span style={{ fontSize: '18px', lineHeight: '1', color: '#b40024' }}>🛎️</span>
+    <p style={{ margin: 0, fontSize: '13px', color: '#7f1d1d' }}>
+      Teklif almak istediğiniz ürünleri sepete ekleyerek, ister PDF ile WhatsApp’tan paylaşabilir,
+      isterseniz sepeti bize göndererek teklif alabilirsiniz.
+    </p>
+  </div>
           </div>
 
           <div
@@ -198,7 +228,7 @@ const SideCart: React.FC<SideCartProps> = ({
                   label="Açıklama"
                   name="desc"
                 >
-                  <Input.TextArea placeholder="Sipariş notu..." />
+                  <Input.TextArea placeholder="Teklif notu..." />
                 </Form.Item>
 
                 <Button
@@ -212,7 +242,7 @@ const SideCart: React.FC<SideCartProps> = ({
                     width: "100%"
                   }}
                 >
-                  Siparişi Tamamla
+                  Teklifi Tamamla
                 </Button>
               </Form>
             </Card>

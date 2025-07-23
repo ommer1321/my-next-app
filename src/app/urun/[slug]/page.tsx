@@ -1,6 +1,6 @@
 'use client';
 
-import { Col, Row, Typography, Button } from 'antd';
+import { Col, Row, Typography, Button, Tag } from 'antd';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
@@ -205,7 +205,11 @@ const productImages: string[] = urunImageList
   .filter(Boolean);
 
 
-
+useEffect(() => {
+  if (sliderRef.current) {
+    sliderRef.current.slickGoTo(1); // index 1 = 2. ürün
+  }
+}, [benzerUrunler]);
   const mainSliderSettings = {
     dots: false,
     arrows: true,
@@ -216,6 +220,8 @@ const productImages: string[] = urunImageList
   };
 
   const similarSliderSettings = {
+      initialSlide: 1, // 👈 2. üründen başlasın (index 1)
+
     infinite: false,
     speed: 500,
     slidesToShow: 4,
@@ -477,11 +483,43 @@ console.log(seo);
   
 
 
-          <Paragraph style={{ color: '#555' }}>
+
+
+          <Paragraph style={{ color: '#555',marginTop: 18, fontSize: '16px' }}>
             Kas Spor Garantisi <br />
             - Tüm Ürünlerimiz 2 Yıl Garanti Kapsamındadır. <br />
             - Yedek Parça ve Servis Desteği 10 Yıl Devam Etmektedir.
           </Paragraph>
+
+
+   <Col span={24}>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <Tag
+              color="red"
+              style={{
+                fontSize: '14px',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                fontWeight: '500',
+              }}
+            >
+              Sınırlı Sayıda Stok
+            </Tag>
+
+            <Tag
+              color="green"
+              style={{
+                fontSize: '14px',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                fontWeight: '500',
+              }}
+            >
+              Şimdi %15 İndirimli
+            </Tag>
+          </div>
+        </Col>
+
         </Col>
       </Row>
     </section>
